@@ -6,14 +6,14 @@ import movies from './reducers';
 import { createStore } from 'redux';
 
 const store = createStore(movies);
-store.dispatch({
-  type:'ADD_MOVIES',
-  movies:[{name:'Superman'}]
-})
+// store.dispatch({
+//   type:'ADD_MOVIES',
+//   movies:[{name:'Superman'}]
+// })
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+    <App 
+      store={store}
+    />,
   document.getElementById('root')
 );
 
