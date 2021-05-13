@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { createContext } from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './components/App';
@@ -13,6 +13,19 @@ const logger = ({ dispatch,getState }) => (next) => (action) => {
   }
   next(action);
 }
+const store = createStore(rootReducer,applyMiddleware(logger,thunk));
+export const StoreContext = createContext();
+class Provider extends React.Component{
+  render(){
+    const {store} = this.props;
+    return(
+      <StoreContext.Provider value = {store}>
+        {this.props.children}
+      </StoreContext.Provider>
+    )
+  }
+}
+
 // const logger = function ({ dispatch,getState }){
 //   return function (next){
 //     return function(action){
@@ -22,15 +35,15 @@ const logger = ({ dispatch,getState }) => (next) => (action) => {
 //     }
 //   }
 // }
-const store = createStore(rootReducer,applyMiddleware(logger,thunk));
+
 // store.dispatch({
 //   type:'ADD_MOVIES',
 //   movies:[{name:'Superman'}]
 // })
 ReactDOM.render(
-    <App 
-      store={store}
-    />,
+  <Provider store={store}>
+    <App />
+  </Provider>,
   document.getElementById('root')
 );
 
